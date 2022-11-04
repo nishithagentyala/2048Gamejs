@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginUser } from '../UserDetails/userActions'
+import { loginUser } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { Form, Row, Col, Button } from 'react-bootstrap'

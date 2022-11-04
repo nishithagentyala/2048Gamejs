@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Nav, Container, Navbar, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useNavigate } from 'react-router-dom'
-
-import { logoutUser } from '../UserDetails/userActions'
+import { logoutUser } from '../actions/userActions'
 
 const Header = () => {
   const history = useNavigate()
@@ -22,7 +21,7 @@ const Header = () => {
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand className='header'> 2048 GAME</Navbar.Brand>
+            <Navbar.Brand> 2048 GAME</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>

@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Screen from './Screen'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Container } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+//import { useNavigate } from 'react-router-dom'
+import { addScores, listMyGames } from '../actions/scoreActions'
 
 const GameScreen = () => {
+  const dispatch = useDispatch()
+  const [best, setBest] = useState(0)
+  const scoreList = useSelector((state) => state.scoreList)
+  const { scores } = scoreList
+
   const divArray = document.querySelectorAll('.box')
 
   let gameArray = []
 
   let s = 0
-  var best = 0
 
   const initGame = () => {
     for (let i = 0; i < 16; i++) gameArray.push(0)
@@ -159,7 +166,7 @@ const GameScreen = () => {
       if (gameArray.includes(2048)) {
         document.getElementById('status').innerHTML = 'You Win'
         document.getElementById('status').classList.add('win')
-
+        newGame()
         document.removeEventListener('keyup', handleKeyBoradEvent)
       }
     }
@@ -167,23 +174,7 @@ const GameScreen = () => {
       document.getElementById('score').innerHTML = s
     }
   }
-  const bestScore = (s) => {
-    if (best === 0) {
-      document.getElementById('bestscore').innerHTML = s
-      localStorage.setItem('bestscore', s)
-      best = s
-    } else if (s > best) {
-      best = s
-      document.getElementById('bestscore').innerHTML = s
-      localStorage.setItem('bestscore', s)
-    } else {
-      best = localStorage.getItem('bestscore', s)
-      document.getElementById('bestscore').innerHTML = localStorage.getItem(
-        'bestscore',
-        s
-      )
-    }
-  }
+
   const pickColor = (num) => {
     switch (num) {
       case 2:
@@ -239,84 +230,88 @@ const GameScreen = () => {
   document.addEventListener('keyup', handleKeyBoradEvent)
 
   //for touch
-  window.onload = function () {
-    var gesture = {
-        x: [],
-        y: [],
-        match: '',
-      },
-      tolerance = 100
 
-    var surface = document.getElementById('board')
+  var gesture = {
+      x: [],
+      y: [],
+      match: '',
+    },
+    tolerance = 100
 
-    if (surface) {
-      surface.addEventListener('touchstart', function (e) {
-        e.preventDefault()
-        for (var i = 0; i < e.touches.length; i++) {
-          gesture.x.push(e.touches[i].clientX)
-          gesture.y.push(e.touches[i].clientY)
-        }
-      })
-    }
-    if (surface) {
-      surface.addEventListener('touchmove', function (e) {
-        e.preventDefault()
-        for (var i = 0; i < e.touches.length; i++) {
-          gesture.x.push(e.touches[i].clientX)
-          gesture.y.push(e.touches[i].clientY)
-        }
-      })
-    }
-    if (surface) {
-      surface.addEventListener('touchend', function (e) {
-        var xTravel = gesture.x[gesture.x.length - 1] - gesture.x[0],
-          yTravel = gesture.y[gesture.y.length - 1] - gesture.y[0]
+  var surface = document.getElementById('board')
 
-        if (
-          xTravel < tolerance &&
-          xTravel > -tolerance &&
-          yTravel < -tolerance
-        ) {
-          handleColumn('Up', true)
-          generateRandom()
-        }
-        if (
-          xTravel < tolerance &&
-          xTravel > -tolerance &&
-          yTravel > tolerance
-        ) {
-          handleColumn('Down', true)
-          generateRandom()
-        }
-        if (
-          yTravel < tolerance &&
-          yTravel > -tolerance &&
-          xTravel < -tolerance
-        ) {
-          handleRow('Left', true)
-          generateRandom()
-        }
-        if (
-          yTravel < tolerance &&
-          yTravel > -tolerance &&
-          xTravel > tolerance
-        ) {
-          handleRow('Right', true)
-          generateRandom()
-        }
-
-        gesture.x = []
-        gesture.y = []
-        gesture.match = xTravel = yTravel = ''
-      })
-    }
+  if (surface) {
+    surface.addEventListener('touchstart', function (e) {
+      e.preventDefault()
+      for (var i = 0; i < e.touches.length; i++) {
+        gesture.x.push(e.touches[i].clientX)
+        gesture.y.push(e.touches[i].clientY)
+      }
+    })
   }
+  if (surface) {
+    surface.addEventListener('touchmove', function (e) {
+      e.preventDefault()
+      for (var i = 0; i < e.touches.length; i++) {
+        gesture.x.push(e.touches[i].clientX)
+        gesture.y.push(e.touches[i].clientY)
+      }
+    })
+  }
+  if (surface) {
+    surface.addEventListener('touchend', function (e) {
+      var xTravel = gesture.x[gesture.x.length - 1] - gesture.x[0],
+        yTravel = gesture.y[gesture.y.length - 1] - gesture.y[0]
+
+      if (xTravel < tolerance && xTravel > -tolerance && yTravel < -tolerance) {
+        handleColumn('Up', true)
+        generateRandom()
+      }
+      if (xTravel < tolerance && xTravel > -tolerance && yTravel > tolerance) {
+        handleColumn('Down', true)
+        generateRandom()
+      }
+      if (yTravel < tolerance && yTravel > -tolerance && xTravel < -tolerance) {
+        handleRow('Left', true)
+        generateRandom()
+      }
+      if (yTravel < tolerance && yTravel > -tolerance && xTravel > tolerance) {
+        handleRow('Right', true)
+        generateRandom()
+      }
+
+      gesture.x = []
+      gesture.y = []
+      gesture.match = xTravel = yTravel = ''
+    })
+  }
+
   initGame()
   generateRandom()
   generateRandom()
 
+  useEffect(() => {
+    dispatch(listMyGames())
+  }, [dispatch])
+
   function newGame() {
-    bestScore(s)
+    if (best === 0) {
+      setBest(s)
+      document.getElementById('best').innerHTML = best
+    } else {
+      let b = 0
+      for (let i = 0; i < scores.length; i++) {
+        if (scores[i].s > s) {
+          b = scores[i].s
+        } else if (scores[i].s < s) {
+          b = s
+        }
+        setBest(b)
+        document.getElementById('best').innerHTML = best
+      }
+      dispatch(addScores(s, best))
+    }
+
     s = 0
     gameArray = []
     for (let i = 0; i < 16; i++) {
@@ -325,26 +320,28 @@ const GameScreen = () => {
       element.innerHTML = ''
     }
     document.getElementById('status').classList.remove('win')
-    document.getElementById('status').innerText = ' '
+    document.getElementById('status').innerHTML = ' '
     document.addEventListener('keyup', handleKeyBoradEvent)
+
     initGame()
     generateRandom()
     generateRandom()
   }
 
   return (
-    <>
-      <Row className='text-center '>
-        <Col md={1} className='bg-primary m-2 p-2 text-white mx-auto'>
+    <Container fluid>
+      <Row className='text-center'>
+        <Col className='bg-primary text-white mt-2 mx-5 mb-2 p-2'>
           SCORE
           <p id='score'>0</p>
         </Col>
-        <Col md={1} className='bg-primary m-2 p-2 text-white mx-auto'>
-          BEST<p id='bestscore'>0</p>
+        <Col className='bg-primary text-white mt-2 mx-5 mb-2 p-2'>
+          BEST
+          <p id='best'>0</p>
         </Col>
       </Row>
       <Row>
-        <Col className='text-center m-2'>
+        <Col className='text-center'>
           <button
             type='submit'
             className='btn btn-dark'
@@ -360,7 +357,7 @@ const GameScreen = () => {
         <Col id='status'></Col>
       </Row>
       <Screen />
-    </>
+    </Container>
   )
 }
 

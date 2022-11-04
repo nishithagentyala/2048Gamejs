@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { registerUser } from '../UserDetails/userActions'
+import { registerUser } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import Loader from '../components/Loader'

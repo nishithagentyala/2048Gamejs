@@ -14,7 +14,7 @@ import {
   USER_PROFILE_UPDATE_REQUEST,
   USER_PROFILE_UPDATE_SUCCESS,
   USER_PROFILE_UPDATE_RESET,
-} from './userConstants'
+} from '../constants/userConstants'
 
 export const loginUserReducer = (state = {}, action) => {
   switch (action.type) {

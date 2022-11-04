@@ -11,7 +11,7 @@ const StartGame = () => {
     else history('/login')
   }
   return (
-    <div className='text-center mt-5'>
+    <div className='text-center m-5'>
       <button type='button' onClick={StartGame} className='btn btn-primary '>
         StartGame
       </button>

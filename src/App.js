@@ -1,12 +1,11 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import RegisterScreen from './UserScreen/RegisterScreen'
-import LoginScreen from './UserScreen/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen'
+import LoginScreen from './screens/LoginScreen'
 import Header from './components/Header'
-import StartGame from './game/StartGame'
-import GameScreen from './game/GameScreen'
-import ProfileScreen from './UserScreen/ProfileScreen'
-import WinningScreen from './game/WinningScreen'
+import StartGame from './screens/StartGame'
+import GameScreen from './screens/GameScreen'
+import ProfileScreen from './screens/ProfileScreen'
 
 const App = () => {
   return (
@@ -19,8 +18,6 @@ const App = () => {
           <Route path='/login' element={<LoginScreen />} />
           <Route path='/game' element={<GameScreen />} />
           <Route path='/profile' element={<ProfileScreen />} />
-          <Route path='/win' element={<WinningScreen />} />
-          <Route path='/loose' element={<WinningScreen />} />
         </Routes>
       </Router>
     </>

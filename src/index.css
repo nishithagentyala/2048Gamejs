@@ -1,68 +1,29 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 .nav {
   margin-left: auto;
 }
-.header {
-  margin: auto;
-}
-#header {
-  background-color: black;
-  color: white;
-  padding: 12px;
-  text-align: center;
-  width: 100%;
-}
-.scoreboard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-.scoreboard h3 {
-  margin: 10px 20px;
-  height: 100px;
-  width: 100px;
-  background-color: antiquewhite;
-  padding: 10px;
-  border: 2px solid black;
-  border-radius: 5px;
-  font-size: 20px;
-  padding: 10px;
-}
-.scoreboard h3 p {
-  font-size: 40px;
-}
+
 #board {
+  width: fit-content;
   background-color: antiquewhite;
-  margin: 20px auto;
-  display: grid;
-  grid-template-columns: 85px 85px 85px 85px;
-  grid-template-rows: 85px 85px 85px 85px;
-  flex-wrap: wrap;
   border: 5px solid rgb(131, 118, 118);
   border-radius: 8px;
   font-weight: bolder;
-  width: fit-content;
+  margin: 12px auto;
 }
 
 .box {
+  width: 100px;
+  height: 100px;
   font-weight: bolder;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-
   font-size: 35px;
   font-weight: bolder;
   border: 5px solid rgb(131, 118, 118);
 }
-.gamebtn {
-  margin: 0px auto;
-}
+
 .c2 {
   background-color: rgb(238, 228, 218);
   color: rgb(17, 16, 16);
@@ -115,5 +76,4 @@
   text-align: center;
   position: absolute;
   font-size: 150px;
-  z-index: inherit;
 }
